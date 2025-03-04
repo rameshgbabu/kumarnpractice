@@ -17,8 +17,8 @@ jobs:
     #   uses: actions/checkout@v4.2
     - name: start the docker engine
       run: |
+        pwsh C:\Users\ASUS\OneDrive\Desktop\mypracticerepo\kumarnpractice\actions-runner> .\run.cmd
       shell: pwsh
-        C:\Users\ASUS\OneDrive\Desktop\mypracticerepo\kumarnpractice\actions-runner> .\run.cmd
     - name: Build Docker image
       run: |
         docker build -t spring-boot .
