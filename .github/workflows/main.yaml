@@ -1,0 +1,109 @@
+name: Multi-Job Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      file_name:
+        description: 'Name of the file to create'
+        required: true
+        default: 'output.txt'
+
+jobs:
+  job1:
+    runs-on: myrunner
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4.2
+
+    - name: Build Docker image
+      run: |
+        docker build -t spring-boot .
+      shell: pwsh
+
+    - name: Run Docker container
+      run: |
+        docker run -p 8080:8080 -d spring-boot
+      shell: pwsh
+
+  job2:
+    runs-on: myrunner
+
+    steps:
+    - name: Create directory
+      run: New-Item -ItemType Directory -Force -Path my-folder
+      shell: pwsh
+
+    - name: Create and populate file
+      id: create_file
+      run: |
+        $filePath = "my-folder/${{ github.event.inputs.file_name }}"
+        "KEY1=VALUE1" | Out-File -FilePath $filePath -Append
+        "KEY2=VALUE2" | Out-File -FilePath $filePath -Append
+        echo "::set-output name=file_path::$filePath"
+      shell: pwsh
+
+    - name: Create second directory
+      run: New-Item -ItemType Directory -Force -Path my-second-folder
+      shell: pwsh
+
+    - name: Copy and move file
+      id: move_file
+      run: |
+        $srcPath = "${{ steps.create_file.outputs.file_path }}"
+        $destPath = "my-second-folder/${{ github.event.inputs.file_name }}"
+        Copy-Item -Path $srcPath -Destination $destPath
+        echo "::set-output name=dest_file_path::$destPath"
+      shell: pwsh
+
+    - name: Replace content in file
+      run: |
+        $filePath = "${{ steps.move_file.outputs.dest_file_path }}"
+        (Get-Content -Path $filePath) -replace "KEY1", "KEY3" -replace "VALUE2", "VALUE3" | Set-Content -Path $filePath
+      shell: pwsh
+
+    - name: Display output
+      run: |
+        Write-Output "Created file path: ${{ steps.create_file.outputs.file_path }}"
+        Write-Output "Moved and modified file path: ${{ steps.move_file.outputs.dest_file_path }}"
+      shell: pwsh
+
+  job3:
+    runs-on: myrunner
+    needs: job2
+
+    steps:
+    - name: Create third directory
+      run: New-Item -ItemType Directory -Force -Path my-third-folder
+      shell: pwsh
+
+    - name: Copy file to third folder
+      run: |
+        $srcPath = "${{ needs.job2.outputs.file_path }}"
+        $destPath = "my-third-folder/${{ github.event.inputs.file_name }}"
+        Copy-Item -Path $srcPath -Destination $destPath
+        echo "::set-output name=third_file_path::$destPath"
+      shell: pwsh
+
+    - name: Replace VALUE1 with VALUE4
+      run: |
+        $filePath = "${{ steps.copy-file.outputs.third_file_path }}"
+        (Get-Content -Path $filePath) -replace "VALUE1", "VALUE4" | Set-Content -Path $filePath
+      shell: pwsh
+
+    - name: Add sleep for 1 minute
+      run: Start-Sleep -Seconds 60
+      shell: pwsh
+
+    - name: Display final output
+      run: Write-Output "${{ steps.copy-file.outputs.third_file_path }}"
+      shell: pwsh
+
+  job4:
+    runs-on: myrunner
+    needs: [job1, job3]
+
+    steps:
+    - name: List Docker images
+      run: docker images
+      shell: pwsh

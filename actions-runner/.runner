@@ -1,0 +1,9 @@
+﻿{
+  "agentId": 2,
+  "agentName": "myrunner",
+  "poolId": 1,
+  "poolName": "Default",
+  "serverUrl": "https://pipelinesghubeus8.actions.githubusercontent.com/SpZhSwZKENrXQDyek3EufDtqLED2Luv4OVR7m5QCj3GUIY8qbE/",
+  "gitHubUrl": "https://github.com/rameshgbabu/kumarnpractice",
+  "workFolder": "_work"
+}
