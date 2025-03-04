@@ -21,7 +21,7 @@ jobs:
       shell: pwsh
     - name: Build Docker image
       run: |
-        docker build -t spring-boot -f ./Dockerfile .
+        docker build -t spring-boot -f /c/Users/ASUS/OneDrive/Desktop/mypracticerepo/kumarnpractice/Dockerfile .
 
     - name: Run Docker container
       run: |
