@@ -17,7 +17,7 @@ jobs:
     #   uses: actions/checkout@v4.2
     - name: start the docker engine
       run: |
-        c:\Program Files\Docker\Docker\Docker Desktop.exe
+        Start-Service docker
       shell: pwsh
     - name: Build Docker image
       run: |
