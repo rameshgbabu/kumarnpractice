@@ -17,7 +17,7 @@ jobs:
     #   uses: actions/checkout@v4.2
     - name: start the docker engine
       run: |
-        c:\Users\ASUS\Downloads\Docker Desktop Installer.exe
+        Start-Process -FilePath "c:\Users\ASUS\Downloads\dockerdesktop.exe"
       shell: pwsh
     - name: Build Docker image
       run: |
