@@ -15,11 +15,13 @@ jobs:
     steps:
     # - name: Checkout code
     #   uses: actions/checkout@v4.2
-
+    - name: start the docker engine
+      run: |
+      shell: pwsh
+        C:\Users\ASUS\OneDrive\Desktop\mypracticerepo\kumarnpractice\actions-runner> .\run.cmd
     - name: Build Docker image
       run: |
-        docker build -t spring-boot C:\Users\ASUS\OneDrive\Desktop\mypracticerepo\kumarnpractice\Dockerfile
-      shell: pwsh
+        docker build -t spring-boot .
 
     - name: Run Docker container
       run: |
