@@ -10,7 +10,7 @@ on:
 
 jobs:
   job1:
-    runs-on: myrunner
+    runs-on: windows-latest
 
     steps:
     - name: Checkout code
@@ -27,7 +27,7 @@ jobs:
       shell: pwsh
 
   job2:
-    runs-on: myrunner
+    runs-on: windows-latest
 
     steps:
     - name: Create directory
@@ -69,7 +69,7 @@ jobs:
       shell: pwsh
 
   job3:
-    runs-on: myrunner
+    runs-on: windows-latest
     needs: job2
 
     steps:
@@ -100,7 +100,7 @@ jobs:
       shell: pwsh
 
   job4:
-    runs-on: myrunner
+    runs-on: windows-latest
     needs: [job1, job3]
 
     steps:
