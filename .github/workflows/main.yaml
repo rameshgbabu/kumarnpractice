@@ -15,10 +15,10 @@ jobs:
     steps:
     # - name: Checkout code
     #   uses: actions/checkout@v4.2
-    # - name: start the docker engine
-    #   run: |
-    #     c:\Users\ASUS\Downloads\dockerdesktop.exe
-    #   shell: pwsh
+    - name: start the docker engine
+      run: |
+        c:\Program Files\Docker\Docker\Docker Desktop.exe
+      shell: pwsh
     - name: Build Docker image
       run: |
         docker build -t spring-boot -f ./Dockerfile .
